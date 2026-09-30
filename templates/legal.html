@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Privacy Policy, Terms, Cookies & Accessibility | {{ site_name }}</title>
+  <meta name="description" content="Privacy policy, terms of use, cookie policy and accessibility information for {{ site_name }}.">
+  <link rel="canonical" href="{{ site_url }}/legal">
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+</head>
+<body data-theme="dark">
+  <a class="skip-link" href="#mainContent">Skip to main content</a>
+<header class="topbar"><a class="brand" href="/" aria-label="{{ site_name }} home"><span class="brand-mark"><i data-lucide="activity" aria-hidden="true"></i></span><span>{{ site_name }}</span></a><a class="legal-back" href="/"><i data-lucide="arrow-left" aria-hidden="true"></i> Back to checker</a></header>
+<main class="legal-page" id="mainContent">
+  <div class="legal-hero reveal-on-scroll"><div class="badge"><i data-lucide="scale" aria-hidden="true"></i> Clear policies · minimal data</div><span class="eyebrow"><span></span> 📚 LEGAL & PRIVACY</span><h1>Privacy, terms, <em>and trust.</em></h1><p>These policies explain what {{ site_name }} processes, why it is needed, which third-party services are involved, and how the service is intended to be used.</p><p class="legal-note"><strong>Important:</strong> This is a practical website policy template, not legal advice. Replace the business/contact placeholders and have the final text reviewed for the jurisdictions where you operate.</p></div>
+  <nav class="legal-nav" aria-label="Legal sections"><a href="#privacy">Privacy Policy</a><a href="#terms">Terms of Use</a><a href="#cookies">Cookie Policy</a><a href="#accessibility">Accessibility</a><a href="#disclaimer">Disclaimer</a></nav>
+
+  <section class="legal-section reveal-on-scroll" id="privacy"><h2>🔐 Privacy Policy</h2><p><strong>Last updated:</strong> September 2026</p>
+    <h3>What we collect</h3><p>We aim to collect only information needed to provide the feature you choose. A free website audit normally needs only the public website URL you ask us to analyse and technical request information needed to operate the service. An account requires an email address and password. A support request requires your name, email address, the website you want help with, the selected help topic and any message you choose to send.</p>
+    <h3>What we deliberately do not ask for</h3><p>We do not ask for a date of birth, home address, phone number, payment-card number, or advertising profile to use the service. Payment details are handled by the payment provider rather than stored by {{ site_name }}.</p>
+    <h3>How information is used</h3><p>Website URLs are used to perform the requested diagnostics and competitor analysis. Account information is used to authenticate you and remember whether the one-time competitor feature has been unlocked. Support details are used only to respond to your request. We do not sell personal data or use it to build advertising profiles.</p>
+    <h3>Third-party services</h3><p>Website diagnostics use Google PageSpeed Insights. Premium competitor discovery uses Google Places API. Payments use Razorpay when you choose to purchase the premium feature. These providers receive the information needed for the specific request and operate under their own terms and privacy policies. Google Maps Platform use is also subject to <a href="https://developers.google.com/maps/terms" target="_blank" rel="noopener noreferrer">Google Maps Platform Terms</a> and the <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a>.</p>
+    <h3>Reports and retention</h3><p>Website audit results are cached temporarily to reduce repeated third-party API requests and are not presented as a permanent personal report history. Your account database stores account, purchase and entitlement information. Payment records contain transaction identifiers and status needed for reconciliation; {{ site_name }} does not store card or bank credentials.</p>
+    <h3>Children</h3><p>This service is intended for people aged 18 or older. We do not knowingly offer account registration or contact-form processing to children under 18. We do not ask users for their date of birth; instead, registration and contact forms require an age confirmation. If you believe a child has submitted personal information, contact us so we can review and delete it where appropriate.</p>
+    <h3>Your choices</h3><p>You can choose not to create an account and can use the free audit without providing an email address. You can choose not to submit a contact request. You can also clear the site's local cookie-notice preference from your browser storage. Requests about account or personal data can be sent to <a href="mailto:{{ legal_contact_email }}">{{ legal_contact_email }}</a>.</p>
+    <h3>Contact</h3><p>{{ business_name }}<br>{{ business_address }}<br><a href="mailto:{{ legal_contact_email }}">{{ legal_contact_email }}</a></p>
+  </section>
+
+  <section class="legal-section reveal-on-scroll" id="terms"><h2>📜 Terms of Use</h2>
+    <h3>Using the service</h3><p>Use {{ site_name }} only for lawful purposes. You must have permission to request analysis of websites you submit, and you must not use the service to probe, overload, disrupt or circumvent security controls of this application or third-party services.</p>
+    <h3>Automated results</h3><p>Reports are automated technical indicators. Scores and findings can change with network conditions, device emulation, server load, page changes, third-party resources and changes to the underlying analysis service.</p>
+    <h3>Premium competitor report</h3><p>The premium feature is a one-time unlock for the account that purchased it, subject to successful payment verification. Competitor discovery is based on business/place data available through Google Places and may not identify every business in a market. Manually added competitors are checked using the same PageSpeed workflow.</p>
+    <h3>Payments</h3><p>Payments are processed by Razorpay. {{ site_name }} does not receive or store your card PIN, CVV, banking password or other payment credentials. The displayed price and currency are shown at checkout before payment.</p>
+    <h3>No guarantee</h3><p>No report, score or recommendation guarantees search rankings, traffic, conversions, accessibility compliance, security, uptime, revenue or any other business outcome. Important changes should be validated in your own environment.</p>
+    <h3>Availability</h3><p>The service may be changed, suspended or unavailable when third-party services, hosting, networking or maintenance require it. We may add or remove features without creating a recurring obligation.</p>
+  </section>
+
+  <section class="legal-section reveal-on-scroll" id="cookies"><h2>🍪 Cookie Policy</h2>
+    <h3>Essential session cookie</h3><p>The application uses a necessary server session cookie to keep signed-in users authenticated and to protect state-changing requests. This cookie is not used for advertising or cross-site behavioural tracking.</p>
+    <h3>Local browser preference</h3><p>The theme preference and cookie-notice dismissal are stored in browser local storage, not as advertising cookies. They are used only to remember your interface preference and whether you have seen the notice.</p>
+    <h3>Third-party checkout</h3><p>When you open Razorpay Checkout, Razorpay may use its own cookies or similar technologies as described by Razorpay's policies. Those technologies are controlled by Razorpay rather than by {{ site_name }}.</p>
+    <h3>No optional tracking by default</h3><p>We do not enable analytics, advertising, social-tracking or behavioural-profiling cookies by default. The cookie banner is informational and does not use misleading button styling or hidden choices.</p>
+  </section>
+
+  <section class="legal-section reveal-on-scroll" id="accessibility"><h2>♿ Accessibility Statement</h2>
+    <p>We aim to make {{ site_name }} usable with keyboards, screen readers, zoom, reduced motion settings and high-contrast displays. The interface uses labelled controls, meaningful alternative text where images are present, visible focus states, semantic headings and accessible colour contrast.</p>
+    <h3>Known limitations</h3><p>Automated website diagnostics are not a complete accessibility audit. Third-party checkout and external websites may have their own accessibility limitations.</p>
+    <h3>Feedback</h3><p>If you encounter an accessibility barrier, please tell us what happened, the page you were using and the assistive technology or browser involved if you know it. Contact <a href="mailto:{{ legal_contact_email }}">{{ legal_contact_email }}</a>.</p>
+  </section>
+
+  <section class="legal-section reveal-on-scroll" id="disclaimer"><h2>⚠️ Disclaimer</h2><p>This checker provides general automated website diagnostics and plain-language guidance. It is not a substitute for a complete professional technical, security, legal, privacy, accessibility or SEO audit.</p><p>We aim to present data accurately, but automated checks can be incomplete or context-dependent. Always validate important changes in your own environment.</p></section>
+</main>
+<aside class="cookie-banner hidden" id="cookieBanner" aria-label="Cookie notice"><div class="cookie-copy"><i data-lucide="cookie" aria-hidden="true"></i><div><strong>🍪 Essential cookies only</strong><p>We use a necessary session cookie for account access. No advertising or analytics cookies are enabled.</p></div></div><div class="cookie-actions"><button type="button" class="cookie-secondary" id="cookieEssentialOnly">Essential only</button><button type="button" class="cookie-primary" id="cookieAccept">Got it</button></div></aside>
+<footer class="site-footer legal-footer"><div class="footer-bottom">© <span id="footerYear"></span> {{ business_name }} · <a href="/legal#privacy">Privacy</a> · <a href="/legal#terms">Terms</a> · <a href="/legal#cookies">Cookies</a> · <a href="/legal#accessibility">Accessibility</a> · <a href="/#contact">Contact</a></div></footer>
+<script src="{{ url_for('static', filename='site.js') }}"></script>
+</body></html>

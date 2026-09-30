@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Free Website Speed Test & SEO Checker | WebPerf Diagnostics</title>
+  <meta name="description" content="Free website speed test and website health checker. Check performance, Core Web Vitals, accessibility, SEO and best practices with simple recommendations.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <link rel="canonical" href="{{ site_url }}/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Free Website Speed Test & SEO Checker | WebPerf Diagnostics">
+  <meta property="og:description" content="Check website speed, Core Web Vitals, accessibility, SEO and best practices with clear, actionable recommendations.">
+  <meta property="og:url" content="{{ site_url }}/">
+  <meta property="og:site_name" content="{{ site_name }}">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Free Website Speed Test & SEO Checker">
+  <meta name="twitter:description" content="Check website speed, SEO, accessibility and best practices with plain-English recommendations.">
+  <link rel="alternate" type="text/plain" href="{{ site_url }}/llms.txt">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+  <script nonce="{{ csp_nonce }}" type="application/ld+json">{{ {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": site_name,
+    "url": site_url + "/",
+    "description": site_description,
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web"
+  } | tojson }}</script>
+</head>
+<body class="landing-page" data-theme="dark">
+  <a class="skip-link" href="#mainContent">Skip to main content</a>
+  <canvas id="matrixCanvas" aria-hidden="true"></canvas>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="WebPerf Diagnostics home"><span class="brand-mark"><i data-lucide="activity" aria-hidden="true"></i></span><span>WebPerf <b>Diagnostics</b></span></a>
+    <div class="header-actions">
+      <span class="api-status"><i></i><i data-lucide="shield-check" aria-hidden="true"></i> Google PageSpeed</span>
+      {% if current_user %}
+        <span class="account-chip">{{ current_user["email"] }}</span>
+        {% if current_user["premium_unlocked"] %}<span class="premium-chip">Premium</span>{% endif %}
+        <form method="post" action="/logout" class="inline-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="account-link account-button" type="submit">Sign out</button></form>
+      {% else %}
+        <a class="account-link" href="/login">Sign in</a>
+      {% endif %}
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme"><span id="themeIcon" data-lucide="sun" aria-hidden="true"></span><span id="themeText">Light</span></button>
+    </div>
+  </header>
+
+  <main class="shell" id="mainContent">
+    <section class="hero reveal-on-scroll" id="hero">
+      <div class="badge"><i data-lucide="sparkles" aria-hidden="true"></i> Free website audit · no signup required</div>
+      <div class="eyebrow"><span></span> 🔎 WEBSITE HEALTH CHECK</div>
+      <h1>Find out what is slowing your <em>website down.</em></h1>
+      <p class="hero-copy">Run a free check and get clear findings for speed, SEO, accessibility and common technical problems — without creating an account.</p>
+
+      <form class="search-box" id="analyzeForm" novalidate>
+        <div class="url-field">
+          <span class="url-icon"><i data-lucide="globe-2" aria-hidden="true"></i></span>
+          <input id="urlInput" name="url" type="text" inputmode="url" placeholder="example.com" autocomplete="url" required>
+        </div>
+        <select id="strategy" aria-label="Test device">
+          <option value="mobile">Mobile</option>
+          <option value="desktop">Desktop</option>
+        </select>
+        <button id="analyzeBtn" type="submit"><span>Check my website</span><i data-lucide="arrow-right" aria-hidden="true"></i></button>
+      </form>
+      <div class="url-note" id="urlNote">You can type <b>example.com</b> — we'll add https:// automatically.</div>
+      <div class="hero-hint"><i data-lucide="lock-keyhole" aria-hidden="true"></i> Powered by Google PageSpeed Insights · no personal report is saved to your account</div>
+
+      <div class="live-check-counter" aria-live="polite" aria-label="Websites checked in the last hour">
+        <div class="live-check-icon"><i data-lucide="activity" aria-hidden="true"></i></div>
+        <div class="live-check-copy"><span><i></i> LIVE ACTIVITY</span><strong><span id="checksLastHour" data-count="{{ checks_last_hour }}">0</span> websites checked in the last hour</strong></div>
+        <div class="live-check-status"><span></span> Updating with real checks</div>
+      </div>
+
+      <div class="matrix-controls" id="matrixControls" aria-label="Background animation speed">
+        <span class="matrix-controls-label">Background motion</span>
+        <button type="button" class="matrix-speed" data-matrix-speed="slow">Slow</button>
+        <button type="button" class="matrix-speed active" data-matrix-speed="normal">Normal</button>
+        <button type="button" class="matrix-speed" data-matrix-speed="fast">Fast</button>
+      </div>
+    </section>
+
+    <section class="seo-intro reveal-on-scroll" aria-labelledby="seoIntroTitle">
+      <div class="seo-intro-copy">
+        <span class="eyebrow"><span></span> FREE WEBSITE CHECKER</span>
+        <h2 id="seoIntroTitle">⚡ Speed, SEO and accessibility — in one place</h2>
+        <p>Use our free website speed test to see how your site performs for real visitors. We check performance and Core Web Vitals alongside accessibility, search visibility and common web best practices, then explain the results in everyday language.</p>
+      </div>
+      <div class="seo-feature-grid">
+        <article><strong>Website speed test</strong><span>See the measurements that affect loading and responsiveness.</span></article>
+        <article><strong>Core Web Vitals</strong><span>Understand the key page experience signals without the jargon.</span></article>
+        <article><strong>SEO checker</strong><span>Spot common search visibility issues and missing page signals.</span></article>
+        <article><strong>Accessibility check</strong><span>Find usability issues that can make a website harder to use.</span></article>
+      </div>
+    </section>
+
+    <section class="faq-section reveal-on-scroll" aria-labelledby="faqTitle">
+      <div class="section-heading centered"><div><span class="eyebrow"><span></span> COMMON QUESTIONS</span><h2 id="faqTitle">❓ Website audit questions</h2></div><p>Simple answers before you run a check.</p></div>
+      <div class="faq-grid">
+        <details><summary>What does the website speed test check?</summary><p>It uses Google PageSpeed Insights to evaluate performance and several related Lighthouse categories. The report includes speed measurements, accessibility, SEO and best-practice findings.</p></details>
+        <details><summary>Do I need to enter https://?</summary><p>No. You can enter a domain such as example.com. The checker adds https:// automatically before testing it.</p></details>
+        <details><summary>Why can my score change between tests?</summary><p>Performance measurements can vary with server response time, network conditions, device emulation, page changes and third-party resources. Treat a result as a snapshot rather than a permanent score.</p></details>
+        <details><summary>Does a good speed score mean the website is perfect?</summary><p>No. A score is one part of a broader website health picture. Content quality, security, usability, technical SEO and business requirements also matter.</p></details>
+      </div>
+    </section>
+
+    <section class="loading-state hidden" id="loadingState">
+      <div class="loader-orbit"><div></div></div>
+      <h2>Checking your website<span class="thinking-dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span></h2>
+      <p>We're looking at speed, accessibility, search visibility and other things that affect the visitor experience.</p>
+      <div class="loading-steps" aria-label="Website scan progress"><span class="active" data-step="0">Opening website</span><span data-step="1">Checking the page</span><span data-step="2">Preparing your report</span></div>
+    </section>
+
+    <section class="results hidden" id="results">
+      <div class="report-heading">
+        <div>
+          <div class="eyebrow"><span></span> YOUR WEBSITE REPORT</div>
+          <h2 id="reportUrl">example.com</h2>
+          <p id="reportMeta">Google PageSpeed · Mobile</p>
+        </div>
+        <div class="report-actions">
+          <button class="secondary-btn" id="downloadReport" type="button">⇩ Download HTML report</button>
+          <button class="secondary-btn" id="newAnalysis" type="button">↻ Check another website</button>
+        </div>
+      </div>
+
+      <div class="score-grid">
+        <article class="score-card performance-card" data-card="performance"><div class="score-icon"><i data-lucide="zap" aria-hidden="true"></i></div><div class="score-content"><span>Speed</span><strong id="performanceScore">—</strong><small>/ 100</small><div class="mini-bar"><i id="performanceBar"></i></div></div><b class="score-badge" id="performanceBadge">—</b></article>
+        <article class="score-card" data-card="accessibility"><div class="score-icon"><i data-lucide="accessibility" aria-hidden="true"></i></div><div class="score-content"><span>Accessibility</span><strong id="accessibilityScore">—</strong><small>/ 100</small><div class="mini-bar"><i id="accessibilityBar"></i></div></div><b class="score-badge" id="accessibilityBadge">—</b></article>
+        <article class="score-card" data-card="bestPractices"><div class="score-icon"><i data-lucide="badge-check" aria-hidden="true"></i></div><div class="score-content"><span>Best practices</span><strong id="bestPracticesScore">—</strong><small>/ 100</small><div class="mini-bar"><i id="bestPracticesBar"></i></div></div><b class="score-badge" id="bestPracticesBadge">—</b></article>
+        <article class="score-card" data-card="seo"><div class="score-icon"><i data-lucide="search-check" aria-hidden="true"></i></div><div class="score-content"><span>Search visibility</span><strong id="seoScore">—</strong><small>/ 100</small><div class="mini-bar"><i id="seoBar"></i></div></div><b class="score-badge" id="seoBadge">—</b></article>
+      </div>
+
+      <div class="overview-grid">
+        <article class="overall-panel">
+          <div class="panel-title"><span>🧭 Overall website health</span><span class="live-pill">JUST CHECKED</span></div>
+          <div class="overall-body">
+            <div class="gauge" id="gauge"><div class="gauge-inner"><strong id="overallScore">—</strong><span>/ 100</span></div></div>
+            <div class="overall-copy"><div class="status-label" id="overallLabel">—</div><h3 id="overallHeadline">Your report is ready.</h3><p id="overallDescription">We'll help you understand what matters most first.</p></div>
+          </div>
+        </article>
+        <article class="counts-panel">
+          <div class="panel-title"><span>👀 At a glance</span></div>
+          <div class="count-row"><span class="count-icon critical">!</span><div><b id="criticalCount">0</b><span>Needs fixing first</span></div><span>›</span></div>
+          <div class="count-row"><span class="count-icon warning">!</span><div><b id="warningCount">0</b><span>Worth improving</span></div><span>›</span></div>
+          <div class="count-row"><span class="count-icon passed">✓</span><div><b id="passedCount">0</b><span>Checks passed</span></div><span>›</span></div>
+        </article>
+      </div>
+
+      <div class="vitals-alert hidden" id="vitalsAlert"><div class="alert-icon">!</div><div><strong>Your visitors may notice slower loading</strong><p>Some of the key speed and responsiveness checks need attention.</p></div><button type="button" id="viewVitals">See the speed details →</button></div>
+
+      <section class="vitals-section" id="vitals">
+        <div class="section-heading"><div><span class="eyebrow"><span></span> SPEED DETAILS</span><h2>What visitors experience</h2></div><p>Measured during this check.</p></div>
+        <div class="vitals-grid" id="vitalsGrid"></div>
+      </section>
+
+      <section class="competitor-section reveal-on-scroll" id="competitors">
+        <div class="section-heading">
+          <div><span class="eyebrow"><span></span> COMPARE YOUR MARKET</span><h2>See how your website compares</h2></div>
+          <p>Unlock competitor discovery, your own competitor list, and side-by-side website comparisons.</p>
+        </div>
+        <div class="competitor-panel">
+          {% if current_user and current_user["premium_unlocked"] %}
+          <div class="competitor-unlocked" id="competitorUnlocked">
+            <div class="competitor-controls">
+              <label>Market / region
+                <input id="competitorRegion" type="text" list="regionSuggestions" value="India" placeholder="Kolkata, India" maxlength="120" autocomplete="off">
+                <datalist id="regionSuggestions"><option value="Kolkata, India"></option><option value="Mumbai, India"></option><option value="Delhi, India"></option><option value="Bengaluru, India"></option><option value="India"></option><option value="New York, United States"></option><option value="London, United Kingdom"></option><option value="Toronto, Canada"></option><option value="Singapore"></option><option value="Dubai, United Arab Emirates"></option></datalist>
+              </label>
+              <div class="industry-detection">
+                <div class="industry-detection-label">
+                  <span class="eyebrow"><span></span> WEBSITE TYPE</span>
+                  <span id="industryConfidence"></span>
+                </div>
+                <div class="detected-industry">
+                  <div>
+                    <strong id="detectedIndustry">Detecting your industry…</strong>
+                    <span id="industryReason">We're looking at your website to understand what kind of business it is.</span>
+                  </div>
+                  <button type="button" id="changeIndustry" class="secondary-btn"><i data-lucide="pencil" aria-hidden="true"></i> Edit</button>
+                </div>
+                <input id="competitorIndustry" class="industry-override hidden" type="text" placeholder="e.g. digital marketing agency" maxlength="100">
+              </div>
+              <button class="primary-compact" id="findCompetitors" type="button"><i data-lucide="radar" aria-hidden="true"></i> Find my competitors</button>
+            </div>
+            <div class="manual-competitor-row">
+              <label>Add a competitor you already know
+                <div class="manual-competitor-input"><input id="manualCompetitor" type="text" placeholder="competitor.com"><button id="addManualCompetitor" type="button"><i data-lucide="plus" aria-hidden="true"></i> Add</button></div>
+              </label>
+              <p>Search results are cached by market. Add your own competitors without another search.</p>
+            </div>
+            <p class="competitor-note">We automatically identify your website category from its public homepage, then use it to find relevant competing businesses.</p>
+            <div class="competitor-status hidden" id="competitorStatus"></div>
+            <div class="competitor-results" id="competitorResults"></div>
+            <div class="compare-selection-bar hidden" id="compareSelectionBar">
+              <div><i data-lucide="list-checks" aria-hidden="true"></i><strong id="compareSelectionCount">0 of 4 selected</strong><span>Review your choices — comparison starts only when you confirm.</span></div>
+              <div><button type="button" class="secondary-btn" id="clearSelectedBtn">Clear</button><button type="button" class="primary-compact" id="compareSelectedBtn"><i data-lucide="play" aria-hidden="true"></i> Compare selected</button></div>
+            </div>
+            <div class="comparison-progress hidden" id="comparisonProgress" role="status" aria-live="polite">
+              <div class="comparison-progress-top">
+                <div class="comparison-progress-title"><span class="comparison-spinner" aria-hidden="true"></span><strong>Comparing selected websites</strong></div>
+                <strong id="comparisonProgressCount">0 of 0 finished</strong>
+              </div>
+              <div class="comparison-progress-track" aria-hidden="true"><i id="comparisonProgressBar"></i></div>
+              <p id="comparisonProgressText">Preparing the comparison…</p>
+            </div>
+            {% if competitor_provider == "google_places" %}<div class="google-attribution" aria-label="Google Maps attribution">Google Maps</div>{% endif %}
+            <div class="comparison-wrap hidden" id="comparisonWrap">
+              <div class="comparison-heading"><div><span class="eyebrow"><span></span> WEBSITE COMPARISON</span><h3>How selected competitors compare</h3></div><span class="comparison-note">Each arrow is measured against your site.</span></div>
+              <div class="comparison-table-wrap"><table class="comparison-table"><thead><tr id="comparisonHead"><th>Metric</th></tr></thead><tbody id="comparisonBody"></tbody></table></div>
+              <div class="comparison-summary" id="comparisonSummary"></div>
+            </div>
+          </div>
+          {% else %}
+          <div class="premium-lock">
+            <div class="premium-lock-icon"><i data-lucide="crown" aria-hidden="true"></i></div>
+            <div class="premium-lock-copy">
+              <span class="eyebrow"><span></span> 🚀 PREMIUM COMPETITOR REPORT</span>
+              <h3>Compare your site with real businesses in your market.</h3>
+              <p>Unlock business discovery, add competitors you already know, and compare the same four PageSpeed categories side by side.</p>
+              <div class="premium-preview-grid"><span>Find likely competitors</span><span>Add your own competitors</span><span>Side-by-side scores</span><span>Plain-English comparison</span></div>
+              <div class="premium-lock-actions">
+                {% if current_user %}
+                  {% if payment_configured %}<button class="primary-compact" id="unlockCompetitors" type="button">Unlock for {{ premium_price }} →</button>{% else %}<button class="primary-compact" id="unlockCompetitors" type="button">Unlock competitor analysis →</button>{% endif %}
+                {% else %}
+                  <a class="primary-compact premium-link-button" id="premiumRegisterLink" href="/register?next=/#competitors">Create an account to unlock →</a>
+                {% endif %}
+                <span>One-time unlock · no recurring subscription</span>
+              </div>
+              <div class="premium-payment-error hidden" id="premiumPaymentError"></div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </section>
+
+      <section class="issues-section reveal-on-scroll" id="issuesSection">
+        <div class="section-heading"><div><span class="eyebrow"><span></span> YOUR TO-DO LIST</span><h2>🛠 What needs attention</h2></div><p>Click an item to see a simple explanation and next step.</p></div>
+        <div class="filter-row" id="filterRow" role="tablist" aria-label="Filter website checks">
+          <button class="filter active" data-filter="all" type="button">Everything</button>
+          <button class="filter" data-filter="performance" type="button">Speed</button>
+          <button class="filter" data-filter="accessibility" type="button">Accessibility</button>
+          <button class="filter" data-filter="best-practices" type="button">Best practices</button>
+          <button class="filter" data-filter="seo" type="button">SEO</button>
+        </div>
+        <div class="issues-list" id="issuesList"></div>
+      </section>
+
+      <section class="decision-section reveal-on-scroll" id="decisionSection">
+        <div class="section-heading centered"><div><span class="eyebrow"><span></span> WHAT NEXT?</span><h2>🔧 Fix the current site or rebuild?</h2></div><p>A simple way to think about your next step.</p></div>
+        <div class="decision-grid">
+          <article class="decision-card"><div class="decision-icon blue"><i data-lucide="wrench" aria-hidden="true"></i></div><h3>Improve the existing website</h3><p>Usually makes sense when the main structure is fine and the problems are things like images, caching, server settings or a few pieces of code.</p><ul><li>Smaller, focused changes</li><li>Keep the current website and content</li><li>Measure the improvement as you go</li></ul></article>
+          <article class="decision-card"><div class="decision-icon purple"><i data-lucide="refresh-cw" aria-hidden="true"></i></div><h3>Consider a rebuild</h3><p>Worth discussing when the website is built on an old or difficult platform, has many deep issues, or needs a major design and technology change.</p><ul><li>Modernize the foundation</li><li>Address structural problems together</li><li>Plan for easier long-term maintenance</li></ul></article>
+        </div>
+        <div class="decision-note"><b>Not sure?</b> That's normal. A real website audit also looks at your hosting, platform, plugins, code and business needs — not just a speed score.</div>
+      </section>
+
+      <section class="action-panel reveal-on-scroll" id="contact">
+        <div class="action-orb"><i data-lucide="message-circle" aria-hidden="true"></i></div><div><span class="eyebrow">NEED A HAND?</span><h2>🤝 Need help fixing it?</h2><p>Send the report and a short note. We'll reply with what the findings mean and what to tackle first.</p></div><button id="contactButton" type="button"><i data-lucide="send" aria-hidden="true"></i> Request a review</button>
+      </section>
+      <p class="disclaimer">This report is a snapshot from Google PageSpeed Insights. Results can change with network, device, server and page conditions.</p>
+    </section>
+
+    <div class="error-box hidden" id="errorBox"><span>!</span><div><strong>We couldn't finish the check</strong><p id="errorText"></p></div><button id="errorRetry" type="button">Try again</button></div>
+  </main>
+
+  <div class="modal-backdrop hidden" id="contactModal" aria-hidden="true">
+    <div class="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+      <button class="modal-close" id="contactClose" type="button" aria-label="Close">×</button>
+      <div id="contactFormView">
+        <div class="modal-header"><span class="modal-kicker">LET'S TALK</span><h2 id="contactTitle">Get help with this website</h2><p>We'll review the report and contact you with the most practical next step.</p></div>
+        <form id="contactForm" class="contact-form" novalidate>
+          <label>Name<input id="contactName" name="name" type="text" placeholder="Your name" required></label>
+          <label>Email<input id="contactEmail" name="email" type="email" placeholder="you@example.com" autocomplete="email" required></label>
+          <label>Website<input id="contactWebsite" name="website" type="text" placeholder="example.com" required></label>
+          <label>What would you like help with?<select id="contactHelp" name="helpWith"><option>Not sure yet</option><option>Improve website speed</option><option>Fix accessibility or usability</option><option>Improve search visibility</option><option>Plan a rebuild</option></select></label>
+          <label>Anything else? <span class="optional">Optional</span><textarea id="contactMessage" name="message" rows="3" placeholder="Tell us a little about what you need…"></textarea></label>
+          <label class="consent-check"><input id="contactAge" type="checkbox" required><span>I confirm that I am 18 or older and agree to the <a href="/legal#terms" target="_blank" rel="noopener">Terms of Use</a> and <a href="/legal#privacy" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>
+          <div class="contact-error hidden" id="contactError"></div>
+          <div class="modal-actions"><button type="button" class="cancel-btn" id="contactCancel">Cancel</button><button type="submit" class="submit-btn" id="contactSubmit">Send request →</button></div>
+        </form>
+      </div>
+      <div class="contact-success hidden" id="contactSuccess"><div class="success-check">✓</div><h2>Request received</h2><p>Thank you. We've received your request and will get back to you shortly.</p><button class="submit-btn" id="successClose" type="button">Done</button></div>
+    </div>
+  </div>
+
+  <aside class="cookie-banner hidden" id="cookieBanner" aria-label="Cookie notice">
+    <div class="cookie-copy"><i data-lucide="cookie" aria-hidden="true"></i><div><strong>🍪 Cookie notice</strong><p>We use an essential session cookie for sign-in and payment access. We do not enable advertising or analytics cookies by default.</p></div></div>
+    <div class="cookie-actions"><button type="button" class="cookie-secondary" id="cookieEssentialOnly">Essential only</button><button type="button" class="cookie-primary" id="cookieAccept">Got it</button></div>
+  </aside>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand footer-brand-name"><span class="brand-mark">✦</span><span>WebPerf <b>Diagnostics</b></span></div>
+        <p>Simple website performance, SEO, accessibility and usability checks for small businesses and website owners.</p>
+      </div>
+      <div class="footer-column">
+        <h3>Contact</h3>
+        <p>{{ business_name }}<br>{{ business_address }}</p>
+        <a href="mailto:{{ legal_contact_email }}">{{ legal_contact_email }}</a>
+      </div>
+      <div class="footer-column">
+        <h3>Information</h3>
+        <a href="/legal#privacy">Privacy policy</a>
+        <a href="/legal#terms">Terms of use</a>
+        <a href="/legal#cookies">Cookie policy</a>
+        <a href="/legal#accessibility">Accessibility</a>
+        <a href="/legal#disclaimer">Disclaimer</a>
+        <a href="#contact">Contact us</a>
+      </div>
+      <div class="footer-column">
+        <h3>Resources</h3>
+        <a href="/sitemap.xml">Sitemap</a>
+        <a href="/llms.txt">LLMs.txt</a>
+        <a href="/robots.txt">Robots.txt</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© <span id="footerYear"></span> {{ business_name }} <span>·</span> Essential session cookies only · <a href="/legal#cookies">Cookie policy</a></div>
+  </footer>
+  {% if payment_configured %}<script src="https://checkout.razorpay.com/v1/checkout.js"></script>{% endif %}
+  <script nonce="{{ csp_nonce }}">window.WEBPERF_STATE = {{ webperf_state | tojson }};</script>
+  <script src="{{ url_for('static', filename='matrix.js') }}"></script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
